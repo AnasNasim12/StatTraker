@@ -1,0 +1,7 @@
+Flask
+Flask-CORS
+yfinance
+pandas
+reportlab
+scikit-learn
+numpy
