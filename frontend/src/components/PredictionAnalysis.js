@@ -33,16 +33,15 @@ const PredictionAnalysis = ({ ticker, startDate, endDate, isDarkMode }) => {
     fetchPredictions();
   }, [ticker, startDate, endDate]);
 
-  const cardClasses = isDarkMode 
-    ? 'bg-gray-800 rounded-lg shadow-lg border border-gray-700' 
-    : 'bg-white rounded-lg shadow-lg border border-gray-200';
+  const cardClasses = 'bg-gray-900 border border-gray-800 rounded-sm shadow-sm';
 
   if (loading) {
     return (
-      <div className={`${cardClasses} p-6`}>
-        <h3 className="text-lg font-semibold mb-4">📈 Prediction Analysis</h3>
-        <div className="flex justify-center items-center h-64">
-          <div className="text-gray-500">Loading predictions...</div>
+      <div className={`${cardClasses} p-4`}>
+        <h3 className="text-sm font-medium text-gray-300 mb-4">Predictions</h3>
+        <div className="flex justify-center items-center h-32">
+          <div className="w-4 h-4 border border-gray-600 border-t-transparent rounded-full animate-spin mr-2"></div>
+          <div className="text-gray-500 text-sm">Loading...</div>
         </div>
       </div>
     );
@@ -50,12 +49,12 @@ const PredictionAnalysis = ({ ticker, startDate, endDate, isDarkMode }) => {
 
   if (error) {
     return (
-      <div className={`${cardClasses} p-6`}>
-        <h3 className="text-lg font-semibold mb-4">📈 Prediction Analysis</h3>
-        <div className="text-red-500 text-center">{error}</div>
+      <div className={`${cardClasses} p-4`}>
+        <h3 className="text-sm font-medium text-gray-300 mb-4">Predictions</h3>
+        <div className="text-red-400 text-center text-sm">{error}</div>
         <button
           onClick={fetchPredictions}
-          className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mx-auto block"
+          className="mt-2 btn-primary rounded-sm text-xs mx-auto block"
         >
           Retry
         </button>
@@ -68,103 +67,78 @@ const PredictionAnalysis = ({ ticker, startDate, endDate, isDarkMode }) => {
   const { historical_data, future_predictions, model_stats } = predictionData;
 
   return (
-    <div className={`${cardClasses} p-6`}>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">📈 Prediction Analysis</h3>
+    <div className={`${cardClasses} p-4`}>
+      <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-800">
+        <h3 className="text-sm font-medium text-gray-300">Predictions</h3>
         <button
           onClick={fetchPredictions}
-          className="text-blue-600 hover:text-blue-800 text-sm"
+          className="text-gray-500 hover:text-gray-300 text-xs"
         >
-          🔄 Refresh
+          Refresh
         </button>
       </div>
 
-      {/* Enhanced Prediction Type Toggle */}
+      {/* Minimalistic Prediction Type Toggle */}
       <div className="mb-4">
-        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
-          📊 Analysis Type:
-        </label>
-        <div className="flex gap-1 bg-gray-200 dark:bg-gray-700 p-1 rounded-lg">
+        <div className="flex bg-gray-900 border border-gray-800 rounded-sm text-xs">
           {[
-            { key: 'predictions', label: 'ML Predictions', icon: '🔮' },
-            { key: 'daily_change', label: 'Daily Change %', icon: '📊' },
-            { key: 'cumulative_change', label: 'Total Return %', icon: '📈' }
-          ].map((type) => (
+            { key: 'predictions', label: 'ML' },
+            { key: 'daily_change', label: 'Daily %' },
+            { key: 'cumulative_change', label: 'Total %' }
+          ].map((type, index) => (
             <button
               key={type.key}
-              onClick={() => {
-                console.log('Setting prediction chart type to:', type.key);
-                setPredictionChartType(type.key);
-              }}
-              className={`px-3 py-2 rounded-md text-xs font-medium transition-all duration-200 flex items-center gap-1 ${
+              onClick={() => setPredictionChartType(type.key)}
+              className={`px-2 py-1.5 font-medium transition-colors ${
                 predictionChartType === type.key
-                  ? 'bg-blue-600 text-white shadow-md transform scale-105'
-                  : 'bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-500 hover:shadow-sm'
-              }`}
+                  ? 'bg-gray-800 text-gray-100'
+                  : 'text-gray-400 hover:text-gray-200'
+              } ${index < 2 ? 'border-r border-gray-800' : ''}`}
             >
-              <span>{type.icon}</span>
-              <span className="hidden sm:inline">{type.label}</span>
+              {type.label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Current Chart Type Indicator */}
-      <div className="mb-3 text-center">
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          Showing: {predictionChartType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-        </span>
-      </div>
-
-      {/* Model Statistics */}
-      <div className="grid grid-cols-3 gap-4 mb-4 text-center">
-        <div className="p-2 bg-gray-50 dark:bg-gray-700 rounded">
-          <div className="text-lg font-bold text-blue-600">{model_stats.linear_r2}</div>
-          <div className="text-xs text-gray-500">R² Score</div>
+      {/* Minimalistic Model Statistics */}
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        <div className="text-center p-2 bg-gray-800 border border-gray-700 rounded-sm">
+          <div className="text-sm font-mono text-blue-400">{model_stats.linear_r2}</div>
+          <div className="text-xs text-gray-500">R²</div>
         </div>
-        <div className="p-2 bg-gray-50 dark:bg-gray-700 rounded">
-          <div className="text-lg font-bold text-green-600">{model_stats.data_points}</div>
-          <div className="text-xs text-gray-500">Data Points</div>
+        <div className="text-center p-2 bg-gray-800 border border-gray-700 rounded-sm">
+          <div className="text-sm font-mono text-gray-300">{model_stats.data_points}</div>
+          <div className="text-xs text-gray-500">Points</div>
         </div>
-        <div className="p-2 bg-gray-50 dark:bg-gray-700 rounded">
-          <div className="text-lg font-bold text-purple-600">{model_stats.prediction_days}</div>
-          <div className="text-xs text-gray-500">Future Days</div>
+        <div className="text-center p-2 bg-gray-800 border border-gray-700 rounded-sm">
+          <div className="text-sm font-mono text-gray-300">{model_stats.prediction_days}</div>
+          <div className="text-xs text-gray-500">Days</div>
         </div>
       </div>
 
-      {/* Enhanced Chart Container */}
-      <div className="h-64 mb-4 border border-gray-200 dark:border-gray-600 rounded-lg p-2">
+      {/* Chart */}
+      <div className="h-48 border border-gray-800 rounded-sm mb-4">
         <PredictionChart 
           data={historical_data} 
           chartType={predictionChartType}
-          isDarkMode={isDarkMode}
-          key={predictionChartType} // Force re-render on type change
+          isDarkMode={true}
+          key={predictionChartType}
         />
       </div>
 
-      {/* Chart Type Description */}
-      <div className="mb-4 p-2 bg-gray-50 dark:bg-gray-700 rounded text-xs">
-        {predictionChartType === 'predictions' && (
-          <p>🔮 <strong>ML Predictions:</strong> Shows actual prices vs linear/polynomial regression forecasts</p>
-        )}
-        {predictionChartType === 'daily_change' && (
-          <p>📊 <strong>Daily Changes:</strong> Day-over-day percentage price movements (green = gain, red = loss)</p>
-        )}
-        {predictionChartType === 'cumulative_change' && (
-          <p>📈 <strong>Total Return:</strong> Cumulative percentage change from the starting price</p>
-        )}
-      </div>
-
-      {/* Future Predictions */}
+      {/* Future Predictions - Minimalistic */}
       {future_predictions && future_predictions.length > 0 && (
-        <div className="mt-4">
-          <h4 className="font-medium mb-2 text-sm">📅 Future Predictions (Next 7 Days)</h4>
-          <div className="max-h-32 overflow-y-auto">
-            {future_predictions.map((pred, index) => (
-              <div key={index} className="flex justify-between text-xs py-1 border-b border-gray-200 dark:border-gray-600">
-                <span>{pred.date}</span>
-                <span className="text-green-600">${pred.linear_pred}</span>
-                <span className="text-red-600">${pred.poly_pred}</span>
+        <div>
+          <div className="text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">
+            7-Day Forecast
+          </div>
+          <div className="max-h-24 overflow-y-auto scrollbar-hide space-y-1">
+            {future_predictions.slice(0, 3).map((pred, index) => (
+              <div key={index} className="flex justify-between text-xs py-1 border-b border-gray-800">
+                <span className="text-gray-500 font-mono">{pred.date.slice(5)}</span>
+                <span className="text-blue-400 font-mono">${pred.linear_pred}</span>
+                <span className="text-red-400 font-mono">${pred.poly_pred}</span>
               </div>
             ))}
           </div>

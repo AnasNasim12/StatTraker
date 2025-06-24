@@ -74,7 +74,6 @@ function App() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [stockInfo, setStockInfo] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(false);
   const [lastRefresh, setLastRefresh] = useState(null);
   const [comparisonMode, setComparisonMode] = useState(false);
@@ -771,90 +770,68 @@ function App() {
     }
   };
 
-  const themeClasses = isDarkMode 
-    ? 'min-h-screen bg-gray-900 text-white transition-colors duration-300' 
-    : 'min-h-screen bg-gray-100 transition-colors duration-300';
-  
-  const cardClasses = isDarkMode 
-    ? 'bg-gray-800 rounded-lg shadow-lg border border-gray-700' 
-    : 'bg-white rounded-lg shadow-lg border border-gray-200';
-
   return (
-    <div className={themeClasses}>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Enhanced Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Stock Market Dashboard
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Real-time stock analysis and comparison tool
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            {/* Mode Toggle */}
-            <div className="flex bg-gray-200 dark:bg-gray-700 rounded-lg p-1">
+    <div className="min-h-screen bg-black text-gray-100">
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        {/* Minimalistic Header */}
+        <div className="mb-8 border-b border-gray-800 pb-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-light tracking-wide text-gray-100">
+                Stock Market Dashboard
+              </h1>
+              <p className="text-gray-400 text-sm mt-1 font-light">
+                Real-time analysis and comparison
+              </p>
+            </div>
+            
+            {/* Mode Toggle - Minimalistic */}
+            <div className="flex bg-gray-900 border border-gray-800 rounded-sm">
               <button
                 onClick={() => handleModeSwitch(false)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all $
+                className={`px-4 py-2 text-sm font-medium transition-colors $
                   !isMultiMode
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    ? 'bg-gray-800 text-gray-100 border-r border-gray-700'
+                    : 'text-gray-400 hover:text-gray-200'
                 }`}
               >
-                Single Stock
+                Single
               </button>
               <button
                 onClick={() => handleModeSwitch(true)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all $
+                className={`px-4 py-2 text-sm font-medium transition-colors $
                   isMultiMode
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    ? 'bg-gray-800 text-gray-100'
+                    : 'text-gray-400 hover:text-gray-200'
                 }`}
               >
-                Compare Stocks
+                Compare
               </button>
             </div>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`p-2 rounded-lg transition-all ${
-                isDarkMode 
-                  ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400 shadow-lg' 
-                  : 'bg-gray-800 text-white hover:bg-gray-700 shadow-lg'
-              }`}
-            >
-              {isDarkMode ? '☀️' : '🌙'}
-            </button>
           </div>
         </div>
 
-        {/* Multi-Stock Selector Card */}
+        {/* Multi-Stock Selector - Minimalistic */}
         {isMultiMode && (
-          <div className={`${cardClasses} p-6 mb-8`}>
-            <h3 className="text-lg font-semibold mb-4">Selected Stocks</h3>
+          <div className="card-minimal p-4 mb-6">
+            <div className="text-sm font-medium text-gray-300 mb-3">Selected Stocks</div>
             <div className="flex flex-wrap gap-2 mb-4">
               {selectedStocks.map((stock, index) => (
                 <div
                   key={stock}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm ${
-                    isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
-                  }`}
+                  className="flex items-center gap-2 px-3 py-1 bg-gray-800 border border-gray-700 rounded-sm text-sm"
                 >
-                  <span 
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: ['#2563eb', '#dc2626', '#059669', '#d97706', '#7c3aed', '#db2777', '#0891b2', '#65a30d', '#e11d48', '#7c2d12'][index % 10] }}
-                  ></span>
-                  <span className="font-medium">{stock}</span>
+                  <div 
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: ['#3b82f6', '#dc2626', '#16a34a', '#f59e0b', '#8b5cf6', '#ea580c'][index % 6] }}
+                  ></div>
+                  <span className="text-gray-200 font-mono">{stock}</span>
                   {loadingStocks.has(stock) ? (
-                    <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-3 h-3 border border-gray-600 border-t-transparent rounded-full animate-spin"></div>
                   ) : (
                     <button
                       onClick={() => handleRemoveStock(stock)}
-                      className="text-red-500 hover:text-red-700 ml-1"
+                      className="text-gray-400 hover:text-red-400 text-xs ml-1"
                     >
                       ×
                     </button>
@@ -876,257 +853,202 @@ function App() {
               <input
                 type="text"
                 name="newTicker"
-                placeholder="Add stock (e.g., TSLA)"
-                className="flex-1 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Add ticker"
+                className="input-minimal flex-1 rounded-sm"
               />
-              <button
-                type="submit"
-                className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
-              >
-                Add Stock
+              <button type="submit" className="btn-primary rounded-sm">
+                Add
               </button>
             </form>
           </div>
         )}
 
-        {/* Stock Metadata Cards Grid */}
+        {/* Stock Metadata Cards - Minimalistic Grid */}
         {!isMultiMode && stockInfo && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className={`${cardClasses} p-6 hover:shadow-xl transition-shadow`}>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Company</h3>
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              </div>
-              <p className="text-xl font-bold truncate">{stockInfo.company_name}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{stockInfo.sector}</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="card-minimal p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Company</div>
+              <div className="text-lg font-medium text-gray-100 truncate">{stockInfo.company_name}</div>
+              <div className="text-xs text-gray-400 mt-1">{stockInfo.sector}</div>
             </div>
             
-            <div className={`${cardClasses} p-6 hover:shadow-xl transition-shadow`}>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Market Cap</h3>
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              </div>
-              <p className="text-xl font-bold">{formatMarketCap(stockInfo.market_cap)}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">PE: {stockInfo.pe_ratio?.toFixed(2) || 'N/A'}</p>
+            <div className="card-minimal p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Market Cap</div>
+              <div className="text-lg font-medium text-gray-100">{formatMarketCap(stockInfo.market_cap)}</div>
+              <div className="text-xs text-gray-400 mt-1">PE: {stockInfo.pe_ratio?.toFixed(2) || 'N/A'}</div>
             </div>
             
-            <div className={`${cardClasses} p-6 hover:shadow-xl transition-shadow`}>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Current Price</h3>
-                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-              </div>
-              <p className="text-xl font-bold">${stockInfo.current_price?.toFixed(2) || 'N/A'}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+            <div className="card-minimal p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Current Price</div>
+              <div className="text-lg font-medium text-gray-100">${stockInfo.current_price?.toFixed(2) || 'N/A'}</div>
+              <div className="text-xs text-gray-400 mt-1">
                 Prev: ${stockInfo.previous_close?.toFixed(2) || 'N/A'}
-              </p>
+              </div>
             </div>
             
-            <div className={`${cardClasses} p-6 hover:shadow-xl transition-shadow`}>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Day Range</h3>
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-              </div>
-              <p className="text-xl font-bold">
+            <div className="card-minimal p-4">
+              <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Day Range</div>
+              <div className="text-lg font-medium text-gray-100">
                 ${stockInfo.day_low?.toFixed(2) || 'N/A'} - ${stockInfo.day_high?.toFixed(2) || 'N/A'}
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+              </div>
+              <div className="text-xs text-gray-400 mt-1">
                 Vol: {stockInfo.volume?.toLocaleString() || 'N/A'}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Enhanced Loading State */}
-        {loading && (
-          <div className={`${cardClasses} p-12 mb-8`}>
-            <div className="flex flex-col items-center justify-center">
-              <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-              <p className="text-lg font-medium">Loading stock data...</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">This may take a few moments</p>
-            </div>
-          </div>
-        )}
-
-        {/* Enhanced Error State */}
-        {error && (
-          <div className={`${cardClasses} p-6 mb-8 border-l-4 border-red-500`}>
-            <div className="flex items-center">
-              <div className="text-red-500 mr-3">⚠️</div>
-              <div>
-                <h3 className="text-lg font-semibold text-red-700 dark:text-red-400">Error</h3>
-                <p className="text-red-600 dark:text-red-300">{error}</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Controls Card */}
-        <div className={`${cardClasses} p-6 mb-8`}>
+        {/* Controls Section - Minimalistic */}
+        <div className="card-minimal p-4 mb-6">
           {/* Ticker Input - Only show in single mode */}
           {!isMultiMode && (
-            <form onSubmit={handleTickerSubmit} className="flex gap-4 items-center mb-6">
-              <label htmlFor="ticker" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Stock Symbol:
-              </label>
+            <form onSubmit={handleTickerSubmit} className="flex gap-3 items-center mb-4 pb-4 border-b border-gray-800">
+              <div className="text-sm text-gray-400 font-medium min-w-fit">Symbol</div>
               <input
                 type="text"
                 name="ticker"
-                id="ticker"
-                placeholder="Enter ticker (e.g., AAPL)"
-                className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="AAPL"
+                className="input-minimal rounded-sm w-32"
               />
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Fetch Data
+              <button type="submit" className="btn-primary rounded-sm">
+                Load
               </button>
             </form>
           )}
 
-          {/* Date Range Inputs */}
-          <div className="flex gap-4 items-center mb-6">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Date Range:</label>
+          {/* Date Range */}
+          <div className="flex gap-3 items-center mb-4 pb-4 border-b border-gray-800">
+            <div className="text-sm text-gray-400 font-medium min-w-fit">Period</div>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-minimal rounded-sm text-xs"
             />
-            <span className="text-gray-500">to</span>
+            <div className="text-gray-600">—</div>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-minimal rounded-sm text-xs"
             />
-            <button
-              onClick={handleDateChange}
-              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-              disabled={loading}
-            >
-              Update Range
+            <button onClick={handleDateChange} className="btn-primary rounded-sm" disabled={loading}>
+              Update
             </button>
           </div>
 
-          {/* Chart Type Toggle - Enhanced Visibility */}
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-6 p-4 bg-gray-50 dark:bg-gray-750 rounded-lg border border-gray-200 dark:border-gray-600">
-            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 min-w-fit">
-              📊 Chart Type:
-            </label>
-            <div className="flex gap-1 bg-gray-200 dark:bg-gray-700 p-1 rounded-lg">
+          {/* Chart Type Toggle - Minimalistic */}
+          <div className="flex gap-3 items-center mb-4 pb-4 border-b border-gray-800">
+            <div className="text-sm text-gray-400 font-medium min-w-fit">Chart</div>
+            <div className="flex bg-gray-900 border border-gray-800 rounded-sm">
               {['line', 'candlestick', 'volume'].map((type) => (
                 <button
                   key={type}
                   onClick={() => setChartType(type)}
-                  className={`px-6 py-3 rounded-md text-sm font-semibold transition-all duration-200 min-w-[120px] $
+                  className={`px-3 py-1.5 text-xs font-medium transition-colors $
                     chartType === type
-                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/30 transform scale-105'
-                      : 'bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-500 hover:shadow-md border border-gray-300 dark:border-gray-500'
-                  }`}
+                      ? 'bg-gray-800 text-gray-100'
+                      : 'text-gray-400 hover:text-gray-200'
+                  } ${type !== 'volume' ? 'border-r border-gray-800' : ''}`}
                 >
-                  <span className="flex items-center justify-center gap-2">
-                    {type === 'line' && '📈'}
-                    {type === 'candlestick' && '🕯️'}
-                    {type === 'volume' && '📊'}
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </span>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Export and Refresh Controls */}
-          <div className="flex gap-4 items-center justify-between">
+          {/* Actions */}
+          <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center">
-              <label className="text-sm font-medium">Export:</label>
+              <div className="text-sm text-gray-400 font-medium">Export</div>
               <button
                 onClick={() => handleDownload('csv')}
-                className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 text-sm"
+                className="btn-minimal rounded-sm text-xs"
                 disabled={isMultiMode ? Object.keys(multiStockData).length === 0 : !stockData.length}
               >
                 CSV
               </button>
               <button
                 onClick={() => handleDownload('pdf')}
-                className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 text-sm"
+                className="btn-minimal rounded-sm text-xs"
                 disabled={isMultiMode ? Object.keys(multiStockData).length === 0 : !stockData.length}
               >
                 PDF
               </button>
             </div>
 
-            <div className="flex gap-4 items-center">
-              <div className="flex items-center gap-2">
+            <div className="flex gap-3 items-center">
+              <label className="flex items-center gap-2 text-xs text-gray-400">
                 <input
                   type="checkbox"
-                  id="autoRefresh"
                   checked={autoRefresh}
                   onChange={(e) => setAutoRefresh(e.target.checked)}
-                  className="rounded"
+                  className="w-3 h-3 bg-gray-800 border border-gray-600 rounded-sm"
                 />
-                <label htmlFor="autoRefresh" className="text-sm">Auto-refresh (15min)</label>
-              </div>
+                Auto-refresh
+              </label>
               
               <button
                 onClick={handleManualRefresh}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+                className="btn-minimal rounded-sm text-xs"
                 disabled={loading}
               >
-                🔄 Refresh
+                Refresh
               </button>
             </div>
           </div>
 
           {lastRefresh && (
-            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-              Last updated: {lastRefresh.toLocaleTimeString()}
-              {isMultiMode && ` (${selectedStocks.length} stocks)`}
+            <div className="mt-3 pt-3 border-t border-gray-800 text-xs text-gray-500">
+              Updated: {lastRefresh.toLocaleTimeString()}
+              {isMultiMode && ` • ${selectedStocks.length} stocks`}
             </div>
           )}
         </div>
 
-        {/* Enhanced Chart Container */}
-        <div className={`${cardClasses} p-6 hover:shadow-xl transition-shadow`}>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">
-              {isMultiMode 
-                ? `Stock Comparison - ${chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart` 
-                : `${ticker} - ${chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart`
-              }
-            </h2>
-            {lastRefresh && (
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                Last updated: {lastRefresh.toLocaleTimeString()}
-              </div>
-            )}
+        {/* Enhanced Loading State */}
+        {loading && (
+          <div className="card-minimal p-8 mb-6">
+            <div className="flex items-center justify-center">
+              <div className="w-4 h-4 border border-gray-600 border-t-transparent rounded-full animate-spin mr-3"></div>
+              <div className="text-gray-400 text-sm">Loading data...</div>
+            </div>
           </div>
-          
-          {!loading && !error && (
-            <ResponsiveContainer width="100%" height={500}>
-              {isMultiMode ? renderMultiStockChart() : renderChart()}
-            </ResponsiveContainer>
-          )}
-        </div>
+        )}
+
+        {/* Enhanced Error State */}
+        {error && (
+          <div className="card-minimal p-4 mb-6 border-l-2 border-red-900">
+            <div className="text-red-400 text-sm">{error}</div>
+          </div>
+        )}
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Chart Container - Takes 2/3 width */}
-          <div className={`${cardClasses} p-6 hover:shadow-xl transition-shadow lg:col-span-2`}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Chart Container */}
+          <div className="card-minimal p-6 lg:col-span-2">
+            <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-800">
+              <h2 className="text-lg font-medium text-gray-200">
+                {isMultiMode 
+                  ? `Comparison • ${chartType}` 
+                  : `${ticker} • ${chartType}`
+                }
+              </h2>
+            </div>
+            
             {!loading && !error && (
-              <ResponsiveContainer width="100%" height={500}>
+              <ResponsiveContainer width="100%" height={400}>
                 {isMultiMode ? renderMultiStockChart() : renderChart()}
               </ResponsiveContainer>
             )}
           </div>
 
-          {/* Prediction Analysis - Takes 1/3 width */}
+          {/* Prediction Analysis */}
           <div className="lg:col-span-1">
             <PredictionAnalysis 
               ticker={isMultiMode ? selectedStocks[0] : ticker} 
               startDate={startDate}
               endDate={endDate}
-              isDarkMode={isDarkMode}
             />
           </div>
         </div>
